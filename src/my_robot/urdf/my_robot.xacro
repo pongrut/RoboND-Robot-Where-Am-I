@@ -1,0 +1,345 @@
+<?xml version='1.0'?>
+
+<robot name="my_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<xacro:include filename="$(find my_robot)/urdf/my_robot.gazebo" />
+
+<!-- Define constant peroperties-->
+<xacro:property name="degree_90" value="1.5708" />
+<xacro:property name="wheel_radius" value="0.03" />
+<xacro:property name="wheel_length" value="0.008" />
+<xacro:property name="wheel_m" value="0.032" />
+<xacro:property name="wheel_x_offset" value="-0.02" />
+<xacro:property name="chassis_w" value="0.11" />
+<xacro:property name="chassis_l" value="0.14" />
+<xacro:property name="chassis_h" value="0.1" />
+<xacro:property name="chassis_m" value="0.56" />
+<xacro:property name="caster_ball_radius" value="0.0125" />
+<xacro:property name="chassis_ixx" value="0.004" />
+<xacro:property name="chassis_iyy" value="0.003" />
+<xacro:property name="chassis_izz" value="0.004" />
+<xacro:property name="wheel_ixx" value="0.00008" />
+<xacro:property name="wheel_iyy" value="0.00008" />
+<xacro:property name="wheel_izz" value="0.00008" />
+<xacro:property name="hokuyo_w" value="0.05" />
+<xacro:property name="hokuyo_l" value="0.05" />
+<xacro:property name="hokuyo_h" value="0.07" />
+<xacro:property name="hokuyo_m" value="1e-5" />
+
+
+<!-- Define RGB color names  -->
+  <material name="black">
+    <color rgba="0.2 0.2 0.2 1"/>
+  </material>
+  <material name="grey">
+    <color rgba="0.75 0.75 0.75 1"/>
+  </material>
+  <material name="red">
+        <color rgba="0.9 0.1 0.1 1"/>
+  </material>
+  <material name="green">
+        <color rgba="0.46 0.73 0 1"/>
+  </material>
+
+<!-- Dummy Link for KDL does not support a root link with an inertia. -->
+  <link name="robot_footprint"></link>
+  <joint name="robot_footprint_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 ${degree_90}" />
+    <parent link="robot_footprint"/>
+    <child link="base_link" />
+  </joint>
+
+
+<!-- base_link Link  -->
+  <link name='base_link'>     
+    <inertial>
+      <mass value="${chassis_m*1}"/>
+      <origin xyz="0 0 ${chassis_h/2}" rpy="0 0 0"/>
+      <inertia
+          ixx="${chassis_ixx}" ixy="0" ixz="0"
+          iyy="${chassis_iyy}" iyz="0"
+          izz="${chassis_izz}"
+      />
+    </inertial>
+    <collision>
+      <origin xyz="0 0 ${chassis_h/2}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${chassis_w} ${chassis_l} ${chassis_l/2}"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+	<mesh filename="package://my_robot/meshes/jetbot-chassis_no_board.stl" scale="0.001 0.001 0.001" />
+      </geometry>
+      <material name="green"/>
+    </visual>
+
+  </link>
+  <gazebo reference="base_link">
+    <implicitSpringDamper>1</implicitSpringDamper>
+    <material>Gazebo/Green</material>
+  </gazebo>
+
+
+<!-- back_caster Link  -->
+
+  <link name="back_caster">
+    <inertial>
+      <mass value="${wheel_m}"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia
+          ixx="${wheel_ixx/20}" ixy="0" ixz="0"
+          iyy="${wheel_iyy/20}" iyz="0"
+          izz="${wheel_izz/20}"
+      />
+    </inertial>
+    <collision>
+      <origin xyz="0 0 0" rpy=" 0 0 0"/>
+      <geometry>
+        <sphere radius="${caster_ball_radius}"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy=" 0 0 0"/>
+      <geometry>
+        <sphere radius="${caster_ball_radius}"/>
+      </geometry>
+    </visual>
+    <material name="white"/>
+  </link>
+ <gazebo reference="back_caster">
+    <material>Gazebo/White</material>
+  </gazebo>
+
+
+<!-- left_wheel Link  -->
+  <link name="left_wheel">
+    <inertial>
+      <mass value="${wheel_m*1}"/>
+      <origin xyz="0 0 0" rpy=" ${degree_90} 0 0"/>
+      <inertia
+          ixx="${wheel_ixx}" ixy="0" ixz="0"
+          iyy="${wheel_iyy}" iyz="0"
+          izz="${wheel_izz}"
+      />
+    </inertial>
+    <visual>
+      <!-- Offset left joint back -0.008 same as stl wheel thickness -->
+      <origin xyz="0 -0.008  0" rpy=" 0 0 ${degree_90}"/>
+      <geometry>
+       <mesh filename="package://my_robot/meshes/jetbot-wheel.stl" scale="0.001 0.001 0.001" />
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy=" ${degree_90} 0 0"/>
+      <geometry>
+        <cylinder length="${wheel_length}" radius="${wheel_radius}"/>
+      </geometry>
+    </collision>
+  </link>
+ <gazebo reference="left_wheel">
+    <implicitSpringDamper>1</implicitSpringDamper>
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+<!-- right_wheel Link  -->
+  <link name="right_wheel">
+    <inertial>
+      <mass value="${wheel_m*1}"/>
+      <origin xyz="0 0 0" rpy=" ${degree_90} 0 0"/>
+      <inertia
+          ixx="${wheel_ixx}" ixy="0" ixz="0"
+          iyy="${wheel_iyy}" iyz="0"
+          izz="${wheel_izz}"
+      />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy=" 0 0 ${degree_90}"/>
+      <geometry>
+        <mesh filename="package://my_robot/meshes/jetbot-wheel.stl" scale="0.001 0.001 0.001" />
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy=" ${degree_90} 0 0"/>
+      <geometry>
+        <cylinder length="${wheel_length}" radius="${wheel_radius}"/>
+      </geometry>
+    </collision>
+  </link>
+ <gazebo reference="right_wheel">
+    <implicitSpringDamper>1</implicitSpringDamper>
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+<!-- jetson_nano Link  -->
+  <link name='jetson_nano'>
+    <inertial>
+      <mass value="0.023"/>
+      <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
+      <inertia
+          ixx="0.1e-6" ixy="0" ixz="0"
+          iyy="0.1e-6" iyz="0"
+          izz="0.1e-6"
+      />
+    </inertial>
+
+    <collision>
+      <origin xyz="0 0 0" rpy=" 0 0 0"/> 
+      <geometry>
+        <mesh filename="package://my_robot/meshes/jetson_nano.stl" scale="0.001 0.001 0.001" />>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy=" 0 0 0"/>
+      <geometry>
+        <mesh filename="package://my_robot/meshes/jetson_nano.stl" scale="0.001 0.001 0.001" />
+      </geometry>
+      <material name="black"/>
+    </visual>
+  </link>
+  <gazebo reference="jetson_nano">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+
+<!-- camera Link  -->
+  <link name='camera'>
+  <pose>0 0 0 0 0 0</pose>
+    <inertial>
+      <mass value="0.03"/>
+      <origin xyz="0 0 0 " rpy=" 0 0 ${degree_90}"/>
+      <inertia
+          ixx="0.1e-6" ixy="0" ixz="0"
+          iyy="0.1e-6" iyz="0"
+          izz="0.1e-6"
+      />
+    </inertial>
+
+    <collision name='camera_collision'>
+     <origin xyz="0 0 0" rpy=" 0 0 0"/> 
+      <geometry>
+        <!--<mesh filename="package://my_robot/meshes/raspbery_pi_cam.stl" scale="0.001 0.001 0.001" />-->
+        <box size="0.025 0.025 0.025"/>
+      </geometry>
+      
+    </collision>
+
+    <visual name='camera_visual'>
+      <origin xyz="${-chassis_l/2+0.015} 0  ${-chassis_h+0.015}" rpy=" 0 0 ${degree_90}"/>
+      <geometry>
+        <mesh filename="package://my_robot/meshes/raspbery_pi_cam.stl" scale="0.001 0.001 0.001" />
+      </geometry>
+      <material name="grey"/>
+    </visual>
+  </link>
+  <gazebo reference="camera">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+<!-- hokuyo Link  -->
+  <link name='hokuyo'>
+    <pose>0 0 0 0 0 0</pose>
+
+    <inertial>
+      <mass value="1e-5"/>
+      <origin xyz="0.0 0 ${chassis_h/2 }" rpy=" 0 0 0"/>
+      <inertia
+          ixx="0.1e-6" ixy="0" ixz="0"
+          iyy="0.1e-6" iyz="0"
+          izz="0.1e-6"
+      />
+    </inertial>
+
+    <collision name='hokuyo_collision'>
+      <origin xyz="0 0 ${chassis_h/2 -0.001}" rpy=" 0 0 0"/> 
+      <geometry>
+        <box size="0.05 0.05 0.07"/>
+      </geometry>
+    </collision>
+
+    <visual name='hokuyo_visual'>
+      <origin xyz="0 0 ${chassis_h/2 -0.001}" rpy=" 0 0 0"/>
+      <geometry>
+        <mesh filename="package://my_robot/meshes/hokuyo.dae"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+  </link>
+  <gazebo reference="hokuyo">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+
+<!-- hokuyo_joint joint  -->
+  <joint type="fixed" name="hokuyo_joint">
+    <origin xyz="0 0 ${chassis_h/2 + hokuyo_h/2}" rpy="0 0 ${degree_90*3}"/>
+    <parent link="jetson_nano"/>
+    <child link="hokuyo"/>
+    <axis xyz="0 1 0" rpy="0 0 0"/>
+  </joint>
+
+
+<!-- jetson_nano joint  -->
+  <joint type="fixed" name="jetson_nano_joint">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="jetson_nano"/>
+  </joint>
+
+
+<!-- camera_joint joint  -->
+  <joint type="fixed" name="camera_joint">
+    <origin xyz="0 ${-chassis_l/2+0.015} ${chassis_h -0.015}" rpy="0 0 ${-degree_90}"/>
+    <parent link="base_link"/>
+    <child link="camera"/>
+  </joint>
+
+
+<!-- back_caster_joint joint  -->
+  <joint name="back_caster_joint" type="continuous">
+   <origin xyz="0 0.05 ${caster_ball_radius}" rpy="0 0 0"/>
+    <axis xyz="1 0 0"/>
+    <parent link="base_link"/>
+    <child link="back_caster"/>
+    <limit effort="10000" velocity="1000"/>
+    <dynamics damping="0.0" friction="0.0"/>
+  </joint>
+
+
+<!-- left_wheel_hinge joint  -->
+  <joint name="left_wheel_hinge" type="continuous">
+    <origin xyz="${chassis_w/2} ${-chassis_l/2 + wheel_radius +0.0085} ${wheel_radius}" rpy="0 0 ${degree_90*3}"/>
+    <axis xyz="0 1 0"/>
+    <parent link="base_link"/>
+    <child link="left_wheel"/>
+    <limit effort="10000" velocity="1000"/>
+    <dynamics damping="1.0" friction="1.0"/>
+  </joint>
+<!-- right_wheel_hinge joint  -->
+  <joint name="right_wheel_hinge" type="continuous">
+   <origin xyz="${-chassis_w/2} ${-chassis_l/2 + wheel_radius +0.0085} ${wheel_radius}" rpy="0 0 ${degree_90*3}"/>
+    <axis xyz="0 1 0"/>
+    <parent link="base_link"/>
+    <child link="right_wheel"/>
+    <limit effort="10000" velocity="1000"/>
+    <dynamics damping="1.0" friction="1.0"/>
+  </joint>
+
+</robot>
+<!--  
+    <wheelSeparation>0.059</wheelSeparation>
+    <wheelDiameter>0.05998</wheelDiameter>  
+    Need to fix y and z axes of back_caster because I couldn't control the robot to go straight
+    With these setup need z angular offset +0.2 and test with left loop then right loop
+    rostopic pub /cmd_vel geometry_msgs/Twist '{linear:  {x: 0.1, y: 0.0, z: 0.0}, angular: {x: 0.0,y: 0.0,z: -0.01}}' 
+
+    rostopic pub /cmd_vel geometry_msgs/Twist '{linear:  {x: 0.1, y: 0.0, z: 0.0}, angular: {x: 0.0,y: 0.0,z: 0.09}}' 
+
+    rostopic pub /cmd_vel geometry_msgs/Twist '{linear:  {x: 0.1, y: 0.0, z: 0.0}, angular: {x: 0.0,y: 0.0,z: 0.11}}' 
+
+    rostopic pub /cmd_vel geometry_msgs/Twist '{linear:  {x: 0.0, y: 0.0, z: 0.0}, angular: {x: 0.0,y: 0.0,z: 0.0}}' 
+
+-->
