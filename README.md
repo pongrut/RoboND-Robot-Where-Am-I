@@ -24,7 +24,7 @@ sudo apt-get install ros-kinetic-move-base
 * ROS amcl package  
 ```
 sudo apt-get install ros-kinetic-amcl
-
+```
 ## Run the project  
 * Clone this repository
 * Open the repository and make  
