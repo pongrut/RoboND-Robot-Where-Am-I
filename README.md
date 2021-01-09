@@ -1,6 +1,6 @@
 # RoboND-Jetbot-Where-Am-I
-Project 3 of Udacity Robotics Software Engineer Nanodegree Program
-[Demo on Youtube](https://youtu.be/imqXVSOmmfs)
+Project 3 of Udacity Robotics Software Engineer Nanodegree Program <br/>
+[Demonstration Clip Youtube](https://youtu.be/imqXVSOmmfs)
 [![Demo_Video](/videos/RoboND-Robot-Where-Am-I.gif)](https://youtu.be/imqXVSOmmfs)
 ![Jetbot_Model2](images/jetbot_model_2.png)  
 ## Overview  
