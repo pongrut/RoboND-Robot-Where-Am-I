@@ -25,6 +25,12 @@ sudo apt-get install ros-kinetic-move-base
 ```
 sudo apt-get install ros-kinetic-amcl
 ```
+
+* ROS gazebo package  
+```
+sudo apt-get install ros-kinetic-gazebo-ros-pkgs ros-kinetic-gazebo-ros-control  ros-kinetic-effort-controllers
+```
+
 ## Run the project  
 * Clone this repository
 * Open the repository and make  
