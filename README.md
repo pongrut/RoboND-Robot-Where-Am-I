@@ -3,14 +3,14 @@ Project 2 of Udacity Robotics Software Engineer Nanodegree Program
 [![Demo_Video](/videos/RoboND-Robot-Where-Am-I.gif)](https://youtu.be/imqXVSOmmfs)
 ![Jetbot_Model2](images/jetbot_model_2.png)  
 ## Overview  
-This project contains two ROS packages inside `catkin_ws/src`: the `my_robot` and the `ball_chaser`. The Jetbot will be programmed to chase the white-colored ball inside the custom house. 
-In this project you'll utilize ROS AMCL package to accurately localize a mobile robot inside a map in the Gazebo simulation environments.
+In this project implement ROS AMCL package to accurately localize a Jetbot inside a map in the Gazebo simulation environments.
 
 ## Prerequisites/Dependencies  
 * Gazebo >= 7.0  
 * ROS Kinetic  
 * ROS navigation package  
 
+```
 sudo apt-get install ros-kinetic-navigation
 ```
 * ROS map_server package  
@@ -38,15 +38,25 @@ cd /home/workspace/catkin_ws/
 source devel/setup.bash
 roslaunch my_robot world.launch
 ```  
+
+* Launch AMCL package  
+```
+cd /home/workspace/catkin_ws/
+source devel/setup.bash
+roslaunch my_robot amcl.launch
+```  
+
+* Launch ROS Teleop Twist Keyboard which Jetbot model must keep speed at 0.1
+```
+cd /home/workspace/catkin_ws/
+source devel/setup.bash
+rosrun teleop_twist_keyboard teleop_twist_keyboard.py _speed:=0.1 _turn:=0.8
+```  
+
 * Launch ball_chaser and process_image nodes  
 ```
 cd /home/workspace/catkin_ws/
 source devel/setup.bash
 roslaunch ball_chaser ball_chaser.launch
 ```  
-* Visualize  
-```
-cd /home/workspace/catkin_ws/
-source devel/setup.bash
-rosrun rqt_image_view rqt_image_view  
-```  
+
