@@ -32,10 +32,13 @@ sudo apt-get install ros-kinetic-gazebo-ros-pkgs ros-kinetic-gazebo-ros-control 
 ```
 
 ## Run the project  
+* Clone ros-teleop repository
 * Clone this repository
 * Open the repository and make  
 ```
-cd /home/catkin_ws/
+cd /home/catkin_ws/src
+git clone https://github.com/ros-teleop/teleop_twist_keyboard
+cd ..
 catkin_make
 ```
 * Launch my_robot in Gazebo to load both the world and plugins  
