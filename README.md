@@ -5,6 +5,7 @@ Project 3 of Udacity Robotics Software Engineer Nanodegree Program [Video Clip](
 ![Jetbot_Model2](images/jetbot_model_2.png)  
 ## Overview  
 In this project implement ROS AMCL package to accurately localize a Jetbot inside a map in the Gazebo simulation environments.
+However, Jetbot model is very small can be driven **maximum at 0.l speed**.
 
 ## Prerequisites/Dependencies  
 * Gazebo >= 7.0  
