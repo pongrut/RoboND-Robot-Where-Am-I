@@ -1,6 +1,7 @@
 # RoboND-Jetbot-Where-Am-I
 Project 3 of Udacity Robotics Software Engineer Nanodegree Program
 [![Demo_Video](/videos/RoboND-Robot-Where-Am-I.gif)](https://youtu.be/imqXVSOmmfs)
+[Demo on Youtube](https://youtu.be/imqXVSOmmfs)
 ![Jetbot_Model2](images/jetbot_model_2.png)  
 ## Overview  
 In this project implement ROS AMCL package to accurately localize a Jetbot inside a map in the Gazebo simulation environments.
@@ -56,7 +57,7 @@ roslaunch my_robot amcl.launch
 ```  
 
 
-** IMPORTANT!!! Jetbot model is very very small must keep speed not more than 0.1 otherwise it will be CRASHED **
+**IMPORTANT!!! Jetbot model is very very small must keep speed not more than 0.1 otherwise it will be CRASHED**
 * Launch ROS Teleop Twist Keyboard 
 ```
 cd /home/workspace/catkin_ws/
