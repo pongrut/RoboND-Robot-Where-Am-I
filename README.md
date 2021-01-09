@@ -1,5 +1,5 @@
 # RoboND-Jetbot-Where-Am-I
-Project 2 of Udacity Robotics Software Engineer Nanodegree Program
+Project 3 of Udacity Robotics Software Engineer Nanodegree Program
 [![Demo_Video](/videos/RoboND-Robot-Where-Am-I.gif)](https://youtu.be/imqXVSOmmfs)
 ![Jetbot_Model2](images/jetbot_model_2.png)  
 ## Overview  
